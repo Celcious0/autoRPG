@@ -1,124 +1,121 @@
-/* frontend/src/styles/main.css */
+    body {
+      font-family: Arial;
+      text-align: center;
+      background: #f5f5f5;
+      padding: 10px;
+      margin-bottom: 140px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      background: #fff;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    #content {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 6px;
+    }
+    #tabs {
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+      padding: 15px 10px;
+      box-sizing: border-box;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      z-index: 1000;
+    }
+    #tabs button {
+      flex: 0 0 auto;
+      font-size: 14px;
+      padding: 10px;
+    }
+    #navButtons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    #playerInfo {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+    #bars {
+      width: 100%;
+      max-width: 400px;
+    }
+    .bar-container {
+      height: 20px;
+      background: #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 5px 0;
+    }
+    #hpBar {
+      height: 100%;
+      background: #e74c3c;
+      width: 100%;
+      transition: width 0.3s ease;
+    }
+    #expBar {
+      height: 100%;
+      background: #3498db;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .bar-text {
+      text-align: right;
+      font-size: 13px;
+    }
+    #gameUI {
+      display: none;
+    }
+    #mobileOnlyButton {
+      display: none;
+    }
 
-/* --- 기본 레이아웃 & 타이포 --- */
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background: #f5f5f5;
-  padding: 10px;
-  margin-bottom: 140px;
-  box-sizing: border-box;
-}
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #fff;
-  padding: 10px 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-.app-title {
-  font-size: 2rem;
-  margin: 0;
-}
-.btn {
-  margin: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  background: #007bff;
-  color: #fff;
-  border-radius: 4px;
-}
-.btn:hover {
-  background: #0056b3;
-}
+    @media (max-width: 600px) {
+      #tabs {
+        flex-wrap: nowrap;
+        overflow-x: scroll;
+        -webkit-overflow-scrolling: touch;
+      }
+      #mobileOnlyButton {
+        display: inline-block;
+      }
+      #playerInfo {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      #bars {
+        max-width: 100%;
+      }
+    }
 
-/* --- 인증 UI --- */
-.auth-btn {
-  background: #28a745;
-}
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 300px;
-  margin: 16px auto;
-  background: #fff;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  border-radius: 6px;
-}
-.auth-input {
-  padding: 8px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-.auth-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-/* --- 게임 로그 --- */
-#log {
-  max-height: 200px;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  background: #fff;
-  padding: 10px;
-  margin-top: 20px;
-  text-align: left;
-  border-radius: 4px;
-}
-
-/* --- 기타 UI 숨김 --- */
-#gameUI,
-#mobileOnlyButton {
-  display: none;
-}
-
-/* --- 하단 상태 바 --- */
-#bottomStatus {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: #222;
-  color: white;
-  padding: 15px 10px;
-  display: flex;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
-.status-bar-container {
-  width: auto;
-}
-.bar-text {
-  text-align: right;
-  font-size: 13px;
-  margin-top: 4px;
-  user-select: none;
-}
-
-/* --- 반응형 --- */
-@media (max-width: 600px) {
-  body {
-    font-size: 16px;
-  }
-  #bottomStatus {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .auth-input {
-    width: 100%;
-  }
-}
-@media (max-width: 768px) {
-  .bar-text {
-    font-size: 12px;
-  }
-}
+    @media (max-width: 480px) {
+      body {
+        padding: 5px;
+      }
+      button {
+        font-size: 12px;
+        padding: 8px 16px;
+      }
+      #tabs button {
+        font-size: 12px;
+      }
+      .bar-text {
+        font-size: 11px;
+      }
+    }
