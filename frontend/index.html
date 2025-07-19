@@ -2,18 +2,12 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta
-  http-equiv="Content-Security-Policy"
-  content="
-    default-src 'self';
-    script-src  'self';
-    style-src   'self';
-    img-src     'self' data:;
-    connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://autorpg.onrender.com;
-  "
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- CSP: nonce 방식 적용 ― 서버가 ___NONCE___ ↔ 실제 난수로 치환 -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'nonce-___NONCE___'; style-src 'self' 'nonce-___NONCE___'; img-src 'self' data:; connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://autorpg.onrender.com;" />
+
   <title>자동사냥 RPG</title>
   <link rel="stylesheet" href="dist/main.css" />
 </head>
@@ -24,21 +18,37 @@
   </header>
 
   <form id="loginForm" class="login-form" hidden>
-    <input type="text" id="nicknameInput" class="auth-input" placeholder="닉네임" /><br />
-    <input type="email" id="email" class="auth-input" placeholder="이메일" required /><br />
-    <input type="password" id="password" class="auth-input" placeholder="비밀번호" required /><br />
+    <input type="text"     id="nicknameInput" class="auth-input" placeholder="닉네임" /><br />
+    <input type="email"    id="email"         class="auth-input" placeholder="이메일"   required /><br />
+    <input type="password" id="password"      class="auth-input" placeholder="비밀번호" required /><br />
     <div class="auth-buttons">
       <button type="button" id="signUpBtn" class="btn">회원가입</button>
-      <button type="submit" class="btn">로그인</button>
+      <button type="submit"               class="btn">로그인</button>
     </div>
   </form>
 
-  <section id="nav" aria-live="polite" role="region"></section>
-  <section id="stats" aria-live="polite" role="region"></section>
+  <section id="nav"       aria-live="polite" role="region"></section>
+  <section id="stats"     aria-live="polite" role="region"></section>
   <section id="equipment" aria-live="polite" role="region"></section>
   <section id="inventory" aria-live="polite" role="region"></section>
-  <section id="chat" aria-live="polite" role="region"></section>
+  <section id="chat"      aria-live="polite" role="region"></section>
 
-  <script type="module" src="dist/bundle.js" defer></script>
+  <!-- 동적 <style> 태그에 nonce 자동 부여 -->
+  <script nonce="___NONCE___">
+    (function (nc) {
+      window.__CSP_NONCE__    = nc;  /* 필요 시 번들 내부에서 사용 */
+      window.__webpack_nonce__ = nc; /* Webpack HMR 호환 */
+
+      const origCreate = document.createElement;
+      document.createElement = function (tag) {
+        const el = origCreate.call(document, tag);
+        if (tag === 'style') el.setAttribute('nonce', nc);
+        return el;
+      };
+    })('___NONCE___');
+  </script>
+
+  <!-- 메인 번들 -->
+  <script type="module" src="dist/bundle.js" defer nonce="___NONCE___"></script>
 </body>
 </html>
