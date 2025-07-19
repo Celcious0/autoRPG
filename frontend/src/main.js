@@ -57,10 +57,10 @@ import './styles/main.css';
   const user     = new User(userData);
   const inv      = new Inventory(userData.inventory);
 
-  new NavUI(document.getElementById('nav')).render();
-  const statsUI = new StatsUI(user);
+  new NavUI().render();
+  const statsUI = new StatsUI(user, api);
   const invUI   = new InventoryUI(inv, api, statsUI);
-  const chatUI  = new ChatUI(document.getElementById('chat'), api);
+  const chatUI  = new ChatUI(null, api);
 
   await invUI.renderAll();
   await chatUI.renderAll();
