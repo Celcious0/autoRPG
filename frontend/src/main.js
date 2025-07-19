@@ -11,21 +11,23 @@ import './styles/main.css';
 (async () => {
   await AuthService.init();
 
-  let token;
+  let uid, token;
+
   try {
-    token = await AuthService.getToken();
+    // uid·token 동시 획득
+    ({ uid, token } = await AuthService.getAuthContext());
   } catch {
-    // 인증 토큰이 없을 때, 로그인·회원가입 폼 렌더링
+    // 로그인·회원가입 폼 렌더링
     const appEl = document.getElementById('app') || document.body;
     appEl.innerHTML = `
       <h1 class="app-title">자동사냥 RPG</h1>
       <form id="loginForm" class="login-form">
-        <input type="text"    id="nicknameInput" class="auth-input" placeholder="닉네임" /><br />
-        <input type="email"   id="email"         class="auth-input" placeholder="이메일" required /><br />
+        <input type="text"     id="nicknameInput" class="auth-input" placeholder="닉네임" /><br />
+        <input type="email"    id="email"         class="auth-input" placeholder="이메일" required /><br />
         <input type="password" id="password"      class="auth-input" placeholder="비밀번호" required /><br />
         <div class="auth-buttons">
           <button type="button" id="signUpBtn" class="btn">회원가입</button>
-          <button type="submit"           class="btn">로그인</button>
+          <button type="submit"               class="btn">로그인</button>
         </div>
       </form>
     `;
@@ -38,7 +40,7 @@ import './styles/main.css';
       try {
         await AuthService.login(email, password);
         window.location.reload();
-      } catch(err) {
+      } catch (err) {
         alert('로그인 실패: ' + err.message);
       }
     });
@@ -51,7 +53,7 @@ import './styles/main.css';
       try {
         await AuthService.signUp(nickname, email, password);
         window.location.reload();
-      } catch(err) {
+      } catch (err) {
         alert('회원가입 실패: ' + err.message);
       }
     });
@@ -59,8 +61,8 @@ import './styles/main.css';
     return;
   }
 
-  // 인증 성공 시 앱 UI 초기화
-  const api      = new ApiClient(token);
+  // 인증 완료 → 앱 초기화
+  const api      = new ApiClient(token, uid);
   const userData = await api.fetchUserData();
   const user     = new User(userData);
   const inv      = new Inventory(userData.inventory);

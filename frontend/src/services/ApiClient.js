@@ -1,8 +1,12 @@
 export default class ApiClient {
   #base = 'https://autorpg.onrender.com/api';
   #token;
+  #uid;
 
-  constructor(token) { this.#token = token; }
+  constructor(token, uid) {
+    this.#token = token;
+    this.#uid   = uid;
+  }
 
   async #request(path, options = {}) {
     const res = await fetch(`${this.#base}${path}`, {
@@ -17,10 +21,10 @@ export default class ApiClient {
   }
 
   fetchUserData() {
-    return this.#request('/userdata', { method: 'GET' });
+    return this.#request(`/userdata?uid=${encodeURIComponent(this.#uid)}`, { method: 'GET' });
   }
   fetchInventory() {
-    return this.#request(`/inventory?uid=${this.#token}`, { method: 'GET' });
+    return this.#request(`/inventory?uid=${encodeURIComponent(this.#uid)}`, { method: 'GET' });
   }
   equip(itemId) {
     return this.#request('/equip', {

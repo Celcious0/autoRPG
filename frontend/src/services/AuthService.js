@@ -52,4 +52,18 @@ export default class AuthService {
       });
     });
   }
+
+  static async getAuthContext() {
+    return new Promise((resolve, reject) => {
+      onAuthStateChanged(this.#auth, async user => {
+        if (!user) return reject(new Error('login required'));
+        try {
+          const token = await user.getIdToken(true);
+          resolve({ uid: user.uid, token });
+        } catch (e) {
+          reject(e);
+        }
+      });
+    });
+  }
 }
