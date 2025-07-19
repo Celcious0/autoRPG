@@ -6,9 +6,7 @@ export default class NavUI{
     const wrap = document.getElementById('menuWrap');
     this.#tabs.forEach((label,i)=>{
       const b = document.createElement('button');
-      b.className = 'menu-btn';
-      b.dataset.order = i+1;
-      b.textContent = label;
+      b.className = 'menu-btn'; b.dataset.order = i+1; b.textContent = label;
       b.onclick = ()=> window.showTab?.(label);
       wrap.appendChild(b);
     });

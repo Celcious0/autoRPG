@@ -1,11 +1,10 @@
-export default class ChatUI {
-  constructor(container, apiClient){ this.api = apiClient; }
-
+export default class ChatUI{
+  constructor(api){ this.api = api; }
   async renderAll(){
     const wrap = document.createElement('div');
     wrap.id = 'chatWrapper';
     wrap.className = 'chat-wrapper';
-    wrap.innerHTML = `
+    wrap.innerHTML = /*html*/`
       <div class="chat-panel">
         <div id="chatLog"></div>
         <div id="chatInputBox">
@@ -21,13 +20,11 @@ export default class ChatUI {
 
     document.getElementById('chatSend').onclick = ()=>{
       const inp = document.getElementById('chatInput');
-      const msg = inp.value.trim();
-      if(!msg) return;
+      const msg = inp.value.trim(); if(!msg) return;
       const line = document.createElement('div');
       line.textContent = `나 > ${msg}`;
       document.getElementById('chatLog').appendChild(line);
-      inp.value = '';
-      document.getElementById('chatLog').scrollTop = 9e9;
+      inp.value = ''; document.getElementById('chatLog').scrollTop = 9e9;
     };
   }
 }
