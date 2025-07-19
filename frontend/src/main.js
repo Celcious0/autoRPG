@@ -11,22 +11,24 @@ import './styles/main.css';
 (async () => {
   await AuthService.init();
 
+  const loginForm = document.getElementById('loginForm');
+
   let uid, token;
 
   try {
     // uid·token 동시 획득
     ({ uid, token } = await AuthService.getAuthContext());
+    if (loginForm) loginForm.remove();
   } catch {
-    // 로그인·회원가입 폼
+    if (loginForm) loginForm.hidden = false;
 
     // 로그인 처리
-    document.getElementById('loginForm').addEventListener('submit', async e => {
+    loginForm.addEventListener('submit', async e => {
       e.preventDefault();
       const email    = document.getElementById('email').value;
       const password = document.getElementById('password').value;
       try {
         await AuthService.login(email, password);
-        document.getElementById('loginForm').style.display = 'none';
         window.location.reload();
       } catch (err) {
         alert('로그인 실패: ' + err.message);
