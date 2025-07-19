@@ -2,11 +2,12 @@
   "name": "autoRPG",
   "version": "1.0.0",
   "description": "자동사냥 RPG Node.js 서버 및 클라이언트",
+  "type": "module",
   "main": "backend/src/server.js",
   "scripts": {
     "start": "node backend/src/server.js",
     "dev": "nodemon backend/src/server.js",
-    "build": "webpack --config frontend/webpack.config.js"
+    "build": "webpack --config frontend/webpack.config.cjs"
   },
   "keywords": [
     "RPG",

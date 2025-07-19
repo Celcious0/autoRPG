@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- CSP: nonce 방식 적용 ― 서버가 ___NONCE___ ↔ 실제 난수로 치환 -->
+  <!-- 서버가 ___NONCE___ ↔ 무작위 난수로 치환 -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; script-src 'self' 'nonce-___NONCE___'; style-src 'self' 'nonce-___NONCE___'; img-src 'self' data:; connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://autorpg.onrender.com;" />
 
@@ -33,11 +33,11 @@
   <section id="inventory" aria-live="polite" role="region"></section>
   <section id="chat"      aria-live="polite" role="region"></section>
 
-  <!-- 동적 <style> 태그에 nonce 자동 부여 -->
+  <!-- 동적 <style>에도 nonce 자동 부여 -->
   <script nonce="___NONCE___">
     (function (nc) {
-      window.__CSP_NONCE__    = nc;  /* 필요 시 번들 내부에서 사용 */
-      window.__webpack_nonce__ = nc; /* Webpack HMR 호환 */
+      window.__CSP_NONCE__     = nc;
+      window.__webpack_nonce__ = nc;   // Webpack 번들 HMR 호환
 
       const origCreate = document.createElement;
       document.createElement = function (tag) {
@@ -48,7 +48,7 @@
     })('___NONCE___');
   </script>
 
-  <!-- 메인 번들 -->
+  <!-- 메인 번들 (dist 경로 유지) -->
   <script type="module" src="dist/bundle.js" defer nonce="___NONCE___"></script>
 </body>
 </html>
