@@ -18,8 +18,6 @@ import './styles/main.css';
     ({ uid, token } = await AuthService.getAuthContext());
   } catch {
     // 로그인·회원가입 폼
-    const loginForm = document.getElementById('loginForm');
-    loginForm.hidden = false;
 
     // 로그인 처리
     document.getElementById('loginForm').addEventListener('submit', async e => {
@@ -28,7 +26,7 @@ import './styles/main.css';
       const password = document.getElementById('password').value;
       try {
         await AuthService.login(email, password);
-        document.getElementById('loginForm').hidden = true;
+        document.getElementById('loginForm').style.display = 'none';
         window.location.reload();
       } catch (err) {
         alert('로그인 실패: ' + err.message);
