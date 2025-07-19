@@ -17,20 +17,9 @@ import './styles/main.css';
     // uid·token 동시 획득
     ({ uid, token } = await AuthService.getAuthContext());
   } catch {
-    // 로그인·회원가입 폼 렌더링
-    const appEl = document.getElementById('app') || document.body;
-    appEl.innerHTML = `
-      <h1 class="app-title">자동사냥 RPG</h1>
-      <form id="loginForm" class="login-form">
-        <input type="text"     id="nicknameInput" class="auth-input" placeholder="닉네임" /><br />
-        <input type="email"    id="email"         class="auth-input" placeholder="이메일" required /><br />
-        <input type="password" id="password"      class="auth-input" placeholder="비밀번호" required /><br />
-        <div class="auth-buttons">
-          <button type="button" id="signUpBtn" class="btn">회원가입</button>
-          <button type="submit"               class="btn">로그인</button>
-        </div>
-      </form>
-    `;
+    // 로그인·회원가입 폼
+    const loginForm = document.getElementById('loginForm');
+    loginForm.hidden = false;
 
     // 로그인 처리
     document.getElementById('loginForm').addEventListener('submit', async e => {
@@ -39,6 +28,7 @@ import './styles/main.css';
       const password = document.getElementById('password').value;
       try {
         await AuthService.login(email, password);
+        document.getElementById('loginForm').hidden = true;
         window.location.reload();
       } catch (err) {
         alert('로그인 실패: ' + err.message);
