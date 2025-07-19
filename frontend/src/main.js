@@ -9,19 +9,50 @@ import ChatUI       from './ui/ChatUI.js';
 import './styles/main.css';
 
 (async () => {
-  /* ───── 1) 세션 확보 ─────────────────────────────────── */
-  await AuthService.init();                      // 로컬 스토리지 확인 등
+  await AuthService.init();
 
-  // 로그인된 세션이 없으면 로그인 화면으로 이동
-  let { token, uid } = AuthService.getSession() || {};
-  if (!token) {
-    ({ token, uid } = await AuthService.showLoginModal()); // 사용자 로그인 후 토큰·uid 리턴
-    AuthService.saveSession({ token, uid });               // 필요 시 로컬 스토리지 유지
+  const loginForm = document.getElementById('loginForm');
+  let uid, token;
+
+  /* ── 로그인 세션 확보 ───────────────────────── */
+  try {
+    ({ uid, token } = await AuthService.getAuthContext()); // 이미 로그인
+    if (loginForm) loginForm.remove();
+  } catch {
+    if (loginForm) loginForm.hidden = false;
+
+    // 로그인
+    loginForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const email    = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      try {
+        await AuthService.login(email, password);
+        window.location.reload();
+      } catch (err) {
+        alert('로그인 실패: ' + err.message);
+      }
+    });
+
+    // 회원가입
+    document.getElementById('signUpBtn').addEventListener('click', async () => {
+      const nickname = document.getElementById('nicknameInput').value;
+      const email    = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      try {
+        await AuthService.signUp(nickname, email, password);
+        window.location.reload();
+      } catch (err) {
+        alert('회원가입 실패: ' + err.message);
+      }
+    });
+
+    return; // 로그인 전이므로 이후 로직 중단
   }
 
-  /* ───── 2) 앱 초기화 ─────────────────────────────────── */
+  /* ── 앱 초기화 ─────────────────────────────── */
   const api      = new ApiClient(token, uid);
-  const userData = await api.fetchUserData();              // 유저 기본 데이터
+  const userData = await api.fetchUserData();
   const user     = new User(userData);
   const inv      = new Inventory(userData.inventory);
 
@@ -33,19 +64,19 @@ import './styles/main.css';
 
   await invUI.renderAll();
   await chatUI.renderAll();
-  statsUI.render();                                        // 최초 렌더링
+  statsUI.render();
 
-  /* ───── 3) 탭 전환 ──────────────────────────────────── */
+  /* ── 탭 전환 헬퍼 ──────────────────────────── */
   window.showTab = (label = '홈') => {
     document.body.dataset.tab = label;
-    statsUI.render();                                      // 스탯·바 재계산
+    statsUI.render();
   };
   window.showTab('홈');
 
-  /* ───── 4) 실시간 경험치/스탯 동기화 ────────────────── */
+  /* ── 실시간 경험치·스탯 동기화 ─────────────── */
   setInterval(async () => {
     const fresh = await api.fetchUserData();
     Object.assign(user, fresh);
     statsUI.render();
-  }, 5000);                                               // 5 초마다 갱신
+  }, 5000); // 5초마다 갱신
 })();
