@@ -11,7 +11,7 @@ export default class StatsUI {
     el.innerHTML = `
       <div class="profile">
         <div class="diamond"></div>
-        <div class="nameBox">${this.#escapeHtml(this.#u.nickname)}</div>
+        <div class="nameBox">${this.#escape(this.#u.nickname)}</div>
       </div>
 
       <div class="gold-indicator"><div class="coin"></div>${this.#u.gold}</div>
@@ -24,28 +24,28 @@ export default class StatsUI {
       </div>
 
       <div class="bars">
-        <div class="barBox hp">
-          <div class="fill"></div>
-          <span class="txt">${this.#u.hp}/${this.#u.maxHp}</span>
-        </div>
-        <div class="barBox mp">
-          <div class="fill"></div>
-          <span class="txt">${this.#u.mp}/${this.#u.maxMp}</span>
-        </div>
+        <div class="barBox hp"><div class="fill"></div><span class="txt">${this.#u.hp}/${this.#u.maxHp}</span></div>
+        <div class="barBox mp"><div class="fill"></div><span class="txt">${this.#u.mp}/${this.#u.maxMp}</span></div>
       </div>`;
 
+    /* EXP 바(전역 1개) */
     if (!document.getElementById('expBar')) {
-      document.body.insertAdjacentHTML('beforeend',
-        `<div id="expBar"><div class="fill"></div></div>`);
+      document.body.insertAdjacentHTML('beforeend', `<div id="expBar"><div class="fill"></div></div>`);
     }
+
     this.#updateBars();
   }
 
+  /** HP·MP·EXP 막대 실시간 반영 */
   #updateBars() {
-    /** 0-division 및 NaN 방지 */
-    const hpPct  = Math.min(100, Math.max(0, this.#u.hp  / Math.max(this.#u.maxHp, 1)      * 100));
-    const mpPct  = Math.min(100, Math.max(0, this.#u.mp  / Math.max(this.#u.maxMp, 1)      * 100));
-    const expPct = Math.min(100, Math.max(0, this.#u.currentExp / Math.max(this.#u.expToNext, 1) * 100));
+    const pct = (cur, max) => {
+      const n = (cur / Math.max(max, 1)) * 100;
+      return Math.min(100, Math.max(0, n));
+    };
+
+    const hpPct  = pct(this.#u.hp,         this.#u.maxHp);
+    const mpPct  = pct(this.#u.mp,         this.#u.maxMp);
+    const expPct = pct(this.#u.currentExp, this.#u.expToNext);
 
     if (!this.#styleEl) {
       this.#styleEl = document.createElement('style');
@@ -58,8 +58,8 @@ export default class StatsUI {
     `;
   }
 
-  /** 간단한 HTML 이스케이프 (XSS 방지) */
-  #escapeHtml(str = '') {
+  /** 간단한 HTML 이스케이프 */
+  #escape(str=''){
     const div = document.createElement('div');
     div.textContent = String(str);
     return div.innerHTML;
