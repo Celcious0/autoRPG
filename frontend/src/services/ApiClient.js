@@ -1,5 +1,5 @@
 export default class ApiClient {
-  #base = 'https://autorpg.onrender.com/api';
+  #base = 'https://autorpg-qheg.onrender.com/api';
   #token;
   #uid;
 
