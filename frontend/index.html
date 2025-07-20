@@ -4,12 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- 서버가 ___NONCE___ ↔ 무작위 난수로 치환 -->
+  <!-- GitHub Pages용 CSP -->
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'nonce-___NONCE___'; style-src 'self' 'nonce-___NONCE___'; img-src 'self' data:; connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://autorpg-qheg.onrender.com;" />
+        content="
+          default-src 'self' https://autorpg-qheg.onrender.com;
+          script-src 'self' https://autorpg-qheg.onrender.com;
+          style-src  'self' https://autorpg-qheg.onrender.com 'unsafe-inline';
+          img-src    'self' data:;
+          connect-src 'self'
+                       https://identitytoolkit.googleapis.com
+                       https://securetoken.googleapis.com
+                       https://autorpg-qheg.onrender.com;
+        " />
 
   <title>자동사냥 RPG</title>
-  <link rel="stylesheet" href="dist/main.css" />
+  <link rel="stylesheet" href="https://autorpg-qheg.onrender.com/dist/main.css" />
 </head>
 <body>
   <header class="header">
@@ -49,6 +58,8 @@
   </script>
 
   <!-- 메인 번들 (dist 경로 유지) -->
-  <script type="module" src="dist/bundle.js" defer nonce="___NONCE___"></script>
+  <script type="module"
+          src="https://autorpg-qheg.onrender.com/dist/bundle.js"
+          defer></script>
 </body>
 </html>
