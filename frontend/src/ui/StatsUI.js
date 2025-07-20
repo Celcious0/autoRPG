@@ -1,10 +1,7 @@
 export default class StatsUI {
   #u; #api; #styleEl;
 
-  constructor(user, api) {
-    this.#u   = user;
-    this.#api = api;
-  }
+  constructor(user, api) { this.#u = user; this.#api = api; }
 
   render() {
     const el = document.getElementById('stats');
@@ -18,9 +15,7 @@ export default class StatsUI {
       <div id="playerLevel">${this.#u.level}</div>
 
       <div class="potion-group">
-        <div class="potion">소형</div>
-        <div class="potion">중형</div>
-        <div class="potion">대형</div>
+        <div class="potion">소형</div><div class="potion">중형</div><div class="potion">대형</div>
       </div>
 
       <div class="bars">
@@ -28,21 +23,16 @@ export default class StatsUI {
         <div class="barBox mp"><div class="fill"></div><span class="txt">${this.#u.mp}/${this.#u.maxMp}</span></div>
       </div>`;
 
-    /* EXP 바(전역 1개) */
-    if (!document.getElementById('expBar')) {
+    if (!document.getElementById('expBar'))
       document.body.insertAdjacentHTML('beforeend', `<div id="expBar"><div class="fill"></div></div>`);
-    }
 
     this.#updateBars();
   }
 
-  /** HP·MP·EXP 막대 실시간 반영 */
   #updateBars() {
-    const pct = (cur, max) => {
-      const n = (cur / Math.max(max, 1)) * 100;
-      return Math.min(100, Math.max(0, n));
-    };
+    const pct = (cur, max) => Math.min(100, Math.max(0, (cur / Math.max(max, 1)) * 100));
 
+    /* ── 비율 계산 (0-division & NaN 방지) ───────────────── */
     const hpPct  = pct(this.#u.hp,         this.#u.maxHp);
     const mpPct  = pct(this.#u.mp,         this.#u.maxMp);
     const expPct = pct(this.#u.currentExp, this.#u.expToNext);
@@ -58,10 +48,5 @@ export default class StatsUI {
     `;
   }
 
-  /** 간단한 HTML 이스케이프 */
-  #escape(str=''){
-    const div = document.createElement('div');
-    div.textContent = String(str);
-    return div.innerHTML;
-  }
+  #escape(str=''){ const d=document.createElement('div'); d.textContent=String(str); return d.innerHTML; }
 }
