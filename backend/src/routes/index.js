@@ -15,6 +15,9 @@ router.use('/nickname', checkNicknameRouter);
 router.get('/userdata', (req, res) => {
   res.json({ user: { uid: req.uid } });
 });
+router.get('/test', (req, res) => {
+  res.json({ user: { uid: req.uid } });
+});
 router.get('/inventory', InventoryCtrl.get);
 router.post('/equip', InventoryCtrl.equip);
 router.post('/unequip', InventoryCtrl.unequip);
