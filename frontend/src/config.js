@@ -1,9 +1,9 @@
 export const firebaseConfig = {
-  apiKey: "AIzaSyAsHNjSQRToLOuFX47ZU-IfJ31xbfXmhYE",
-  authDomain: "autorpg-acb1d.firebaseapp.com",
-  projectId: "autorpg-acb1d",
-  storageBucket: "autorpg-acb1d.firebasestorage.app",
-  messagingSenderId: "363384656355",
-  appId: "1:363384656355:web:ecbbf40512f60d834b90d6",
-  measurementId: "G-1JF110QT4N"
+  apiKey: "AIzaSyCgZZuCIViAmf3BMXJjturSHycCrMZfxAM",
+  authDomain: "autorpg-35c55.firebaseapp.com",
+  projectId: "autorpg-35c55",
+  storageBucket: "autorpg-35c55.firebasestorage.app",
+  messagingSenderId: "922469911650",
+  appId: "1:922469911650:web:e5ae6eafb074b5bb73d53b",
+  measurementId: "G-797Q2RS57T"
 };
