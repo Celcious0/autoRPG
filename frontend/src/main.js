@@ -76,7 +76,8 @@ import './styles/main.css';
   /* ── 실시간 경험치·스탯 동기화 ─────────────── */
   setInterval(async () => {
     const fresh = await api.fetchUserData();
-    Object.assign(user, fresh);
+    user.update(fresh);
     statsUI.render();
-  }, 5000); // 5초마다 갱신
+  }, 5000);
 })();
+
