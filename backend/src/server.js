@@ -1,5 +1,5 @@
 import express from 'express';
-import cors from 'cors';                                    // 추가
+import cors from 'cors';
 import crypto from 'crypto';
 import fs from 'fs/promises';
 import path from 'path';
@@ -10,21 +10,26 @@ import CONFIG from './config.js';
 
 const __filename  = fileURLToPath(import.meta.url);
 const __dirname   = path.dirname(__filename);
+// frontend 디렉토리 경로 (Static HTML/CSS/JS)
 const projectRoot = path.resolve(__dirname, '..', '..');
 const frontDir    = path.join(projectRoot, 'frontend');
-const distDir     = path.join(frontDir,   'dist');
-const indexPath   = path.join(frontDir,   'index.html');
+const distDir     = path.join(frontDir, 'dist');
+const indexPath   = path.join(frontDir, 'index.html');
 
 const app = express();
 
-// ── CORS 설정: 프론트엔드 Origin 허용 ────────────────────────────────
-app.use('/api', cors({
+// ── CORS 설정: /api 이하 모든 요청에 대해 허용 ───────────────────────────────
+const corsOptions = {
   origin: 'https://celcious0.github.io',
-  methods: ['GET','POST','OPTIONS'],
-  allowedHeaders: ['Content-Type','Authorization']
-}), router);
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+// 프리플라이트(OPTIONS) → CORS 헤더 자동 응답
+app.options('/api/*', cors(corsOptions));
+// 실제 요청(GET/POST 등) → CORS 헤더 자동 응답
+app.use('/api', cors(corsOptions), router);
 
-// ── 정적 파일 서빙 (/dist 이하) ────────────────────────────────────
+// ── 정적 파일 서빙 (dist 폴더) ────────────────────────────────────
 app.use('/dist', express.static(distDir));
 
 // ── SPA Fallback + CSP nonce 주입 ─────────────────────────────────
