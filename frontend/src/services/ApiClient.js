@@ -9,11 +9,15 @@ export default class ApiClient {
   }
 
   async #request(path, options = {}) {
+    const headers = {
+      'Authorization': `Bearer ${this.#token}`
+    };
+    if (options.body) {
+      headers['Content-Type'] = 'application/json';
+    }
+
     const res = await fetch(`${this.#base}${path}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.#token}`
-      },
+      headers,
       ...options
     });
     if (!res.ok) throw new Error(`API Error ${res.status}`);
@@ -21,10 +25,16 @@ export default class ApiClient {
   }
 
   fetchUserData() {
-    return this.#request(`/userdata?uid=${encodeURIComponent(this.#uid)}`, { method: 'GET' });
+    return this.#request(
+      `/userdata?uid=${encodeURIComponent(this.#uid)}`, 
+      { method: 'GET' }
+    );
   }
   fetchInventory() {
-    return this.#request(`/inventory?uid=${encodeURIComponent(this.#uid)}`, { method: 'GET' });
+    return this.#request(
+      `/inventory?uid=${encodeURIComponent(this.#uid)}`, 
+      { method: 'GET' }
+    );
   }
   equip(itemId) {
     return this.#request('/equip', {
