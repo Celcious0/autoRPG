@@ -4,7 +4,6 @@ import crypto from 'crypto';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
 import router from './routes/index.js';
 import CONFIG from './config.js';
 
@@ -25,6 +24,7 @@ const corsOptions = {
 };
 
 app.use('/api', cors(corsOptions));
+app.options('/api/*', cors(corsOptions));
 app.use('/api', express.json());
 app.use('/api', router);
 app.use('/dist', express.static(distDir));
@@ -33,7 +33,6 @@ app.get('*', async (req, res, next) => {
     const nonce = crypto.randomBytes(16).toString('base64');
     let html = await fs.readFile(indexPath, 'utf8');
     html = html.replace(/___NONCE___/g, nonce);
-
     res.setHeader(
       'Content-Security-Policy',
       [
@@ -44,7 +43,6 @@ app.get('*', async (req, res, next) => {
         "connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://autorpg-qheg.onrender.com"
       ].join('; ')
     );
-
     res.type('html').send(html);
   } catch (err) {
     next(err);
