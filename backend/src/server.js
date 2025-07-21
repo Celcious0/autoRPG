@@ -10,6 +10,7 @@ import CONFIG from './config.js';
 
 const __filename  = fileURLToPath(import.meta.url);
 const __dirname   = path.dirname(__filename);
+
 const projectRoot = path.resolve(__dirname, '..', '..');
 const frontDir    = path.join(projectRoot, 'frontend');
 const distDir     = path.join(frontDir, 'dist');
@@ -22,6 +23,7 @@ const corsOptions = {
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 };
+
 app.use('/api', cors(corsOptions));
 app.use('/api', express.json());
 app.use('/api', router);
