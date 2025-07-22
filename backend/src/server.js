@@ -40,7 +40,7 @@ app.get('*', async (req, res, next) => {
         `script-src 'self' 'nonce-${nonce}'`,
         `style-src  'self' 'nonce-${nonce}'`,
         "img-src    'self' data:",
-        "connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://autorpg-qheg.onrender.com"
+        "connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://autorpg-gnwi.onrender.com"
       ].join('; ')
     );
     res.type('html').send(html);
